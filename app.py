@@ -7,10 +7,17 @@ from langchain_community.utilities import SQLDatabase
 from langchain_openai import ChatOpenAI
 import streamlit as st
 
-def init_database(user: str, password: str, host: str, port: str, database: str) -> SQLDatabase:
-    db_uri = f"mysql+mysqlconnector://{user}:{password}@{host}:{port}/{database}"
+# 🔌 Dynamic database initialization
+def init_database(db_type: str, user: str, password: str, host: str, port: str, database: str) -> SQLDatabase:
+    if db_type == "MySQL":
+        db_uri = f"mysql+pymysql://{user}:{password}@{host}:{port}/{database}"
+    elif db_type == "PostgreSQL":
+        db_uri = f"postgresql+psycopg2://{user}:{password}@{host}:{port}/{database}"
+    else:
+        raise ValueError("Unsupported database type selected.")
     return SQLDatabase.from_uri(db_uri)
 
+# 🔁 SQL chain for query generation
 def get_sql_chain(db):
     template = """
     You are a data analyst at a company. You are interacting with a user who is asking you questions about the company's database.
@@ -22,12 +29,6 @@ def get_sql_chain(db):
     
     Write only the SQL query and nothing else. Do not wrap the SQL query in any other text, not even backticks.
     
-    For example:
-    Question: which 3 artists have the most tracks?
-    SQL Query: SELECT ArtistId, COUNT(*) as track_count FROM Track GROUP BY ArtistId ORDER BY track_count DESC LIMIT 3;
-    Questions: Name 10 artists
-    SQL Query: SELECT Name FROM Artist LIMIT 10;
-    
     Your turn:
     
     Question: {question}
@@ -35,19 +36,19 @@ def get_sql_chain(db):
     """
     
     prompt = ChatPromptTemplate.from_template(template)
-    
     llm = ChatOpenAI(model="gpt-3.5-turbo")
     
     def get_schema(_):
         return db.get_table_info()
     
-    return(
+    return (
         RunnablePassthrough.assign(schema=get_schema)
         | prompt
         | llm
         | StrOutputParser()
     )
-    
+
+# 🤖 Query → SQL → Run → Natural Language response
 def get_response(user_query: str, db: SQLDatabase, chat_history: list):
     sql_chain = get_sql_chain(db)
     
@@ -63,7 +64,6 @@ def get_response(user_query: str, db: SQLDatabase, chat_history: list):
     """
     
     prompt = ChatPromptTemplate.from_template(template)
-    
     llm = ChatOpenAI(model="gpt-3.5-turbo")
     
     chain = (
@@ -80,6 +80,7 @@ def get_response(user_query: str, db: SQLDatabase, chat_history: list):
         "chat_history": chat_history,
     })
 
+# 🌱 Initial Chat History
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = [
         AIMessage(content="Hello! I'm an AI Assistant, Ask me anything about your database."),
@@ -88,32 +89,37 @@ if "chat_history" not in st.session_state:
 load_dotenv()
 
 st.set_page_config(page_title="Chat with our ChatDB", page_icon=":speech_balloon")
-
 st.title("Chat with our ChatDB")
 
+# ⚙️ Sidebar Settings
 with st.sidebar:
     st.subheader("Settings")
-    st.write("Connect with MySQL. Connect to the database and start chatting")
+    st.write("Choose your database and connect to start chatting.")
     
+    db_type = st.selectbox("Database Type", ["MySQL", "PostgreSQL"])
     st.text_input("Host", value="localhost", key="Host")
-    st.text_input("Port", value="3306", key="Port")
-    st.text_input("User", value="root", key="User")
-    st.text_input("Password", type="password", value="Dsci-551-Group-62", key="Password")
+    st.text_input("Port", value="3306" if db_type == "MySQL" else "5432", key="Port")
+    st.text_input("User", value="root" if db_type == "MySQL" else "kevinbui", key="User")
+    st.text_input("Password", type="password", value="Dsci-551-Group-62" if db_type == "MySQL" else "", key="Password")
     st.text_input("Database", value="world", key="Database")
     
     if st.button("Connect"):
         with st.spinner("Connecting to database..."):
-            db = init_database(
-                st.session_state["User"],
-                st.session_state["Password"],
-                st.session_state["Host"],
-                st.session_state["Port"],
-                st.session_state["Database"]
-            )
-            st.session_state.db = db
-            st.success("Connected to database!")
-    
+            try:
+                db = init_database(
+                    db_type,
+                    st.session_state["User"],
+                    st.session_state["Password"],
+                    st.session_state["Host"],
+                    st.session_state["Port"],
+                    st.session_state["Database"]
+                )
+                st.session_state.db = db
+                st.success("Connected to database!")
+            except Exception as e:
+                st.error(f"Failed to connect: {e}")
 
+# 🗨️ Chat Interface
 for message in st.session_state.chat_history:
     if isinstance(message, AIMessage):
         with st.chat_message("AI"):

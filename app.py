@@ -7,7 +7,7 @@ from langchain_community.utilities import SQLDatabase
 from langchain_openai import ChatOpenAI
 import streamlit as st
 
-# 🔌 Dynamic database initialization
+# Dynamic database initialization
 def init_database(db_type: str, user: str, password: str, host: str, port: str, database: str) -> SQLDatabase:
     if db_type == "MySQL":
         db_uri = f"mysql+pymysql://{user}:{password}@{host}:{port}/{database}"
@@ -17,20 +17,20 @@ def init_database(db_type: str, user: str, password: str, host: str, port: str, 
         raise ValueError("Unsupported database type selected.")
     return SQLDatabase.from_uri(db_uri)
 
-# 🔁 SQL chain for query generation
-def get_sql_chain(db):
+# SQL chain for query generation
+def get_sql_chain(db, db_type):
     template = """
     You are a data analyst at a company. You are interacting with a user who is asking you questions about the company's database.
-    Based on the table schema below, write a SQL query that would answer the user's question. Take the conversation history into account.
-    
+    Based on the table schema below, write a {db_type} SQL query that would answer the user's question. Take the conversation history into account.
+
     <SCHEMA>{schema}</SCHEMA>
-    
+
     Conversation History: {chat_history}
-    
+
     Write only the SQL query and nothing else. Do not wrap the SQL query in any other text, not even backticks.
-    
+
     Your turn:
-    
+
     Question: {question}
     SQL Query:
     """
@@ -42,15 +42,16 @@ def get_sql_chain(db):
         return db.get_table_info()
     
     return (
-        RunnablePassthrough.assign(schema=get_schema)
+        RunnablePassthrough.assign(schema=get_schema, db_type=lambda _: db_type)
         | prompt
         | llm
         | StrOutputParser()
     )
 
-# 🤖 Query → SQL → Run → Natural Language response
-def get_response(user_query: str, db: SQLDatabase, chat_history: list):
-    sql_chain = get_sql_chain(db)
+
+# Query → SQL → Run → Natural Language response
+def get_response(user_query: str, db: SQLDatabase, chat_history: list, db_type: str):
+    sql_chain = get_sql_chain(db, db_type)
     
     template ="""
         You are a data analyst at a company. You are interacting with a user who is asking you questions about the company's database.
@@ -80,7 +81,7 @@ def get_response(user_query: str, db: SQLDatabase, chat_history: list):
         "chat_history": chat_history,
     })
 
-# 🌱 Initial Chat History
+# Initial Chat History
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = [
         AIMessage(content="Hello! I'm an AI Assistant, Ask me anything about your database."),
@@ -91,7 +92,7 @@ load_dotenv()
 st.set_page_config(page_title="Chat with our ChatDB", page_icon=":speech_balloon")
 st.title("Chat with our ChatDB")
 
-# ⚙️ Sidebar Settings
+# Sidebar Settings
 with st.sidebar:
     st.subheader("Settings")
     st.write("Choose your database and connect to start chatting.")
@@ -119,7 +120,7 @@ with st.sidebar:
             except Exception as e:
                 st.error(f"Failed to connect: {e}")
 
-# 🗨️ Chat Interface
+# Chat Interface
 for message in st.session_state.chat_history:
     if isinstance(message, AIMessage):
         with st.chat_message("AI"):
@@ -136,7 +137,7 @@ if user_query is not None and user_query.strip() != "":
         st.markdown(user_query)
         
     with st.chat_message("AI"):
-        response =  get_response(user_query, st.session_state.db, st.session_state.chat_history)
+        response = get_response(user_query, st.session_state.db, st.session_state.chat_history, db_type)
         st.markdown(response)
         
     st.session_state.chat_history.append(AIMessage(content=response))

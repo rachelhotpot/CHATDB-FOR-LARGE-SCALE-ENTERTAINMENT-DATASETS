@@ -22,6 +22,8 @@ def get_sql_chain(db, db_type):
     template = """
     You are a data analyst at a company. You are interacting with a user who is asking you questions about the company's database.
     Based on the table schema below, write a {db_type} SQL query that would answer the user's question. Take the conversation history into account.
+    
+    Always qualify columns with the table name when using JOINs to avoid ambiguity. For example, use 'movie.movieId' instead of just 'movieId'.
 
     <SCHEMA>{schema}</SCHEMA>
 
@@ -102,7 +104,7 @@ with st.sidebar:
     st.text_input("Port", value="3306" if db_type == "MySQL" else "5432", key="Port")
     st.text_input("User", value="root" if db_type == "MySQL" else "kevinbui", key="User")
     st.text_input("Password", type="password", value="Dsci-551-Group-62" if db_type == "MySQL" else "", key="Password")
-    st.text_input("Database", value="world", key="Database")
+    st.text_input("Database", value="551Project" if db_type == "MySQL" else "project551", key="Database")
     
     if st.button("Connect"):
         with st.spinner("Connecting to database..."):

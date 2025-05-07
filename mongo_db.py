@@ -18,7 +18,6 @@ from bson import ObjectId
 
 OPENAI_API_KEY = "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"
 
-
 # resources: https://cloud.mongodb.com/v2/67ce728a207f1176e92d7d77#/connect/dsci-551-project?automateSecurity=true
 def init_database(user: str, password: str, appName: str):
     db_uri = f"mongodb+srv://{user}:{password}@{appName}.gaj6t5p.mongodb.net/?retryWrites=true&w=majority&appName={appName}"

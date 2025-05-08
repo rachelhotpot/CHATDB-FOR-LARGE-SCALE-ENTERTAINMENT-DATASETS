@@ -1,4 +1,5 @@
 -- mysql --local-infile=1 -u root -p
+CREATE DATABASE project551;
 
 CREATE TABLE `genome_scores` (
   `movieId` int DEFAULT NULL,
@@ -44,49 +45,49 @@ CREATE TABLE `tag` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 SET GLOBAL local_infile = 1;
-LOAD DATA LOCAL INFILE '/Users/kevinbui/Documents/DSCI 551 - Project/src/dataset1/genome_scores.csv' INTO TABLE genome_scores CHARACTER SET utf8mb4 FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
-LOAD DATA LOCAL INFILE '/Users/kevinbui/Documents/DSCI 551 - Project/src/dataset1/genome_tags.csv' INTO TABLE genome_tags CHARACTER SET utf8mb4 FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
-LOAD DATA LOCAL INFILE '/Users/kevinbui/Documents/DSCI 551 - Project/src/dataset1/link.csv' INTO TABLE link CHARACTER SET utf8mb4 FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
-LOAD DATA LOCAL INFILE '/Users/kevinbui/Documents/DSCI 551 - Project/src/dataset1/movie.csv' INTO TABLE movie CHARACTER SET utf8mb4 FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
-LOAD DATA LOCAL INFILE '/Users/kevinbui/Documents/DSCI 551 - Project/src/dataset1/rating.csv' INTO TABLE rating CHARACTER SET utf8mb4 FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
-LOAD DATA LOCAL INFILE '/Users/kevinbui/Documents/DSCI 551 - Project/src/dataset1/tag.csv' INTO TABLE tag CHARACTER SET utf8mb4 FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
+LOAD DATA LOCAL INFILE '/dataset/genome_scores.csv' INTO TABLE genome_scores CHARACTER SET utf8mb4 FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
+LOAD DATA LOCAL INFILE '/dataset/genome_tags.csv' INTO TABLE genome_tags CHARACTER SET utf8mb4 FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
+LOAD DATA LOCAL INFILE '/dataset/link.csv' INTO TABLE link CHARACTER SET utf8mb4 FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
+LOAD DATA LOCAL INFILE '/dataset/movie.csv' INTO TABLE movie CHARACTER SET utf8mb4 FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
+LOAD DATA LOCAL INFILE '/dataset/rating.csv' INTO TABLE rating CHARACTER SET utf8mb4 FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
+LOAD DATA LOCAL INFILE '/dataset/tag.csv' INTO TABLE tag CHARACTER SET utf8mb4 FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\r\n' IGNORE 1 LINES;
 
-ALTER TABLE `551project`.`genome_scores` 
+ALTER TABLE `project551`.`genome_scores` 
 ADD CONSTRAINT `fk_genomescores_movieid`
   FOREIGN KEY (`movieId`)
-  REFERENCES `551project`.`movie` (`movieId`)
+  REFERENCES `project551`.`movie` (`movieId`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION,
 ADD CONSTRAINT `fk_genomescores_tagid`
   FOREIGN KEY (`tagId`)
-  REFERENCES `551project`.`genome_tags` (`tagId`)
+  REFERENCES `project551`.`genome_tags` (`tagId`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
   
-ALTER TABLE `551project`.`link` 
+ALTER TABLE `project551`.`link` 
 ADD INDEX `movieid_idx` (`movieId` ASC) VISIBLE;
-ALTER TABLE `551project`.`link` 
+ALTER TABLE `project551`.`link` 
 ADD CONSTRAINT `fk_link_movieid`
   FOREIGN KEY (`movieId`)
-  REFERENCES `551project`.`movie` (`movieId`)
+  REFERENCES `project551`.`movie` (`movieId`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
   
-ALTER TABLE `551project`.`rating` 
+ALTER TABLE `project551`.`rating` 
 ADD INDEX `movieid_idx` (`movieId` ASC) VISIBLE;
-ALTER TABLE `551project`.`rating` 
+ALTER TABLE `project551`.`rating` 
 ADD CONSTRAINT `fk_rating_movieid`
   FOREIGN KEY (`movieId`)
-  REFERENCES `551project`.`movie` (`movieId`)
+  REFERENCES `project551`.`movie` (`movieId`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
 
-ALTER TABLE `551project`.`tag` 
+ALTER TABLE `project551`.`tag` 
 ADD INDEX `movieid_idx` (`movieId` ASC) VISIBLE;
-ALTER TABLE `551project`.`tag` 
+ALTER TABLE `project551`.`tag` 
 ADD CONSTRAINT `fk_tag_movieid`
   FOREIGN KEY (`movieId`)
-  REFERENCES `551project`.`movie` (`movieId`)
+  REFERENCES `project551`.`movie` (`movieId`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
 

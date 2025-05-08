@@ -42,10 +42,10 @@ CREATE TABLE tag (
   timestamp TIMESTAMP
 );
 
-\copy genome_scores FROM '/Users/kevinbui/Documents/DSCI 551 - Project/src/dataset1/genome_scores.csv' DELIMITER ',' CSV HEADER;
-\copy genome_tags FROM '/Users/kevinbui/Documents/DSCI 551 - Project/src/dataset1/genome_tags.csv' DELIMITER ',' CSV HEADER;
-\copy link FROM '/Users/kevinbui/Documents/DSCI 551 - Project/src/dataset1/link.csv' DELIMITER ',' CSV HEADER;
-\copy movie FROM '/Users/kevinbui/Documents/DSCI 551 - Project/src/dataset1/movie.csv' DELIMITER ',' CSV HEADER;
-\copy rating FROM '/Users/kevinbui/Documents/DSCI 551 - Project/src/dataset1/rating.csv' DELIMITER ',' CSV HEADER;
-\copy tag FROM '/Users/kevinbui/Documents/DSCI 551 - Project/src/dataset1/tag.csv' DELIMITER ',' CSV HEADER;
+\copy genome_scores FROM '/dataset/genome_scores.csv' DELIMITER ',' CSV HEADER;
+\copy genome_tags FROM '/dataset/genome_tags.csv' DELIMITER ',' CSV HEADER;
+\copy link FROM '/dataset/link.csv' DELIMITER ',' CSV HEADER;
+\copy movie FROM '/dataset/movie.csv' DELIMITER ',' CSV HEADER;
+\copy rating FROM '/dataset/rating.csv' DELIMITER ',' CSV HEADER;
+\copy tag FROM '/dataset/tag.csv' DELIMITER ',' CSV HEADER;
 

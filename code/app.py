@@ -1,5 +1,4 @@
 from dotenv import load_dotenv
-
 from langchain_core.messages import AIMessage, HumanMessage
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
@@ -7,9 +6,11 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_community.utilities import SQLDatabase
 from langchain_openai import ChatOpenAI
 import streamlit as st
-db = SQLDatabase.from_uri("mysql+pymysql://root:@localhost/chatdb")
-import os
+from sqlalchemy import create_engine
+import pandas as pd
 
+# PLEASE REPLACE WITH YOUR PERSONAL OPENAI API KEY 
+OPENAI_API_KEY= ""
 
 # Dynamic database initialization
 def init_database(db_type: str, user: str, password: str, host: str, port: str, database: str) -> SQLDatabase:
@@ -19,15 +20,17 @@ def init_database(db_type: str, user: str, password: str, host: str, port: str, 
         db_uri = f"postgresql+psycopg2://{user}:{password}@{host}:{port}/{database}"
     else:
         raise ValueError("Unsupported database type selected.")
-    return SQLDatabase.from_uri(db_uri)
+    return SQLDatabase.from_uri(db_uri)                     
 
 # SQL chain for query generation
 def get_sql_chain(db, db_type):
     template = """
     You are a data analyst at a company. You are interacting with a user who is asking you questions about the company's database.
-    Based on the table schema below, write a {db_type} SQL query that would answer the user's question. Take the conversation history into account.
+    Based on the table schema below, write a {db_type} SQL query that would answer the user's question. Take the conversation 
+    history into account.
     
-    Always qualify columns with the table name when using JOINs to avoid ambiguity. For example, use 'movie.movieId' instead of just 'movieId'.
+    Always qualify columns with the table name when using JOINs to avoid ambiguity. For example, use 'movie.movieId' instead of 
+    just 'movieId'.
 
     <SCHEMA>{schema}</SCHEMA>
 
@@ -42,8 +45,7 @@ def get_sql_chain(db, db_type):
     """
     
     prompt = ChatPromptTemplate.from_template(template)
-    llm = ChatOpenAI(model="gpt-3.5-turbo",
-                api_key="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"     )
+    llm = ChatOpenAI(model="gpt-3.5-turbo", api_key=OPENAI_API_KEY)
     
     def get_schema(_):
         return db.get_table_info()
@@ -72,7 +74,7 @@ def get_response(user_query: str, db: SQLDatabase, chat_history: list, db_type: 
     """
     
     prompt = ChatPromptTemplate.from_template(template)
-    llm = ChatOpenAI(model="gpt-3.5-turbo")
+    llm = ChatOpenAI(model="gpt-3.5-turbo", api_key=OPENAI_API_KEY)
     
     chain = (
         RunnablePassthrough.assign(query=sql_chain).assign(
@@ -105,11 +107,13 @@ with st.sidebar:
     st.write("Choose your database and connect to start chatting.")
     
     db_type = st.selectbox("Database Type", ["MySQL", "PostgreSQL"])
+    
+    
     st.text_input("Host", value="localhost", key="Host")
     st.text_input("Port", value="3306" if db_type == "MySQL" else "5432", key="Port")
-    st.text_input("User", value="root" if db_type == "MySQL" else "kevinbui", key="User")
-    st.text_input("Password", type="password", value="Dsci-551-Group-62" if db_type == "MySQL" else "", key="Password")
-    st.text_input("Database", value="551Project" if db_type == "MySQL" else "project551", key="Database")
+    st.text_input("User", value="root" if db_type == "MySQL" else "riyaberry", key="User")
+    st.text_input("Password", type="password", value="dsci-551" if db_type == "MySQL" else "", key="Password")
+    st.text_input("Database", value="project551", key="Database")
     
     if st.button("Connect"):
         with st.spinner("Connecting to database..."):

@@ -1,7 +1,7 @@
 # CHATDB-FOR-LARGE-SCALE-ENTERTAINMENT-DATASETS
 CHATDB FOR LARGE-SCALE ENTERTAINMENT DATASETS
 
-# # To access our full dataset, please visit this Drive [Link](https://drive.google.com/drive/folders/1z1rtXkZ8yUWFPUhPlxfFKT2U-K7_RcWU?usp=drive_link)
+# To access our full dataset, please visit this Drive [Link](https://drive.google.com/drive/folders/1z1rtXkZ8yUWFPUhPlxfFKT2U-K7_RcWU?usp=drive_link)
 
 # to install MySQL
 brew install mysql

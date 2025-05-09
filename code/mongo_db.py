@@ -17,8 +17,8 @@ import re
 from bson import ObjectId
 
 
-# Please replace with your own OPENAI API Key 
-OPENAI_API_KEY = "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"
+# PLEASE REPLACE WITH YOUR OWN OPENAI API KEY
+OPENAI_API_KEY = ""
 
 # Connect to the MongoDB database using credentials 
 def init_database(user: str, password: str, appName: str):

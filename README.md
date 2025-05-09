@@ -46,12 +46,16 @@ streamlit run mongo_db.py
 
 # Repository Structure 
 |--requirements.txt  
+
 |--README.md 
+
 |--code/  
+
 	|--app.py # Used to create NLI and generate queries for MySQL/PostgreSQL
-  |--mongo_db.py  # Used to create NLI and generate queries for MongoDB
-  |--dataset.sql   # Used to upload data to MySQL
-  |--dataset_psql.sql  # Used to upload data to PostgreSQL
+  	|--mongo_db.py  # Used to create NLI and generate queries for MongoDB
+	|--dataset.sql   # Used to upload data to MySQL
+  	|--dataset_psql.sql  # Used to upload data to PostgreSQL
+  
 |--reports
 	|--Draft- Group Proposal.pdf 
 	|--Mid Progress Report.pdf

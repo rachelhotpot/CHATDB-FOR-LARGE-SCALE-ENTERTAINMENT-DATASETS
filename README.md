@@ -56,7 +56,8 @@ streamlit run mongo_db.py
 	|--dataset.sql   # Used to upload data to MySQL
   	|--dataset_psql.sql  # Used to upload data to PostgreSQL
   
-|--reports
+|--reports/
+
 	|--Draft- Group Proposal.pdf 
 	|--Mid Progress Report.pdf
 	|--551_ Group Proposal Final.pdf

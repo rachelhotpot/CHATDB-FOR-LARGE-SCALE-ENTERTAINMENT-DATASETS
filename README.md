@@ -1,7 +1,7 @@
 # CHATDB-FOR-LARGE-SCALE-ENTERTAINMENT-DATASETS
 CHATDB FOR LARGE-SCALE ENTERTAINMENT DATASETS
 
-# To access our full dataset, please visit this Drive [Link](https://drive.google.com/drive/folders/1z1rtXkZ8yUWFPUhPlxfFKT2U-K7_RcWU?usp=drive_link)
+# To access our full dataset, please visit this Drive [Link](https://drive.google.com/drive/folders/1z1rtXkZ8yUWFPUhPlxfFKT2U-K7_RcWU?usp=drive_link). The original dataset can be found on [Kaggle](https://www.kaggle.com/datasets/grouplens/movielens-20m-dataset/data?select=genome_scores.csv)
 
 # To install all required libraries and packages
 `pip install -r requirements.txt`

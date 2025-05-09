@@ -66,9 +66,9 @@ Save the JSON file you want to upload to MongoDB in our `CHATDB-FOR-LARGE-SCALE-
 
 In the `mongo_db.py` file, find the `init_database` function and call it with your MongoDB username, password, and appName
 
-3. Update the file path
+3. Update the file path and collection name 
 
-In `upload_data_to_mongo` function, update the file path to match the location of your JSON file
+In `upload_data_to_mongo` function, update the file path to match the location of your JSON file -- as well as the collection name 
 
 4. Run the Upload
 

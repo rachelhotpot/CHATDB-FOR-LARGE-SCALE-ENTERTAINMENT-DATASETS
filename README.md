@@ -45,15 +45,15 @@ CHATDB FOR LARGE-SCALE ENTERTAINMENT DATASETS
 
 `psql -U postgres`
 
-3. create database
+2. create database
 
-   `CREATE DATABASE project551;`
+`CREATE DATABASE project551;`
    
-5. connect to created database
+3. connect to created database
 
-   `\c project551`
+`\c project551`
    
-7. Upload dataset
+4. Upload dataset
 
 `\i dataset_psql.sql`
 

@@ -62,7 +62,7 @@ CHATDB FOR LARGE-SCALE ENTERTAINMENT DATASETS
    
 2. In the `mongo_db.py` file, run `init_database` function with your own MongoDB credentials
 
-3. Then, change the line that says `with open("dataset/json/rating.json", "r") as f` in `upload_data_to_mongo` function
+3. Then, change JSON path to reflect where your data is stored in `upload_data_to_mongo` function
 
 4. Run `upload_data_to_mongo` function 
 

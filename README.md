@@ -62,3 +62,6 @@ streamlit run mongo_db.py
 	|--Mid Progress Report.pdf
 	|--551_ Group Proposal Final.pdf
 
+
+# OpenAI API Keys
+For privacy and security reasons, we have not attached the API keys used in the Github. However, we have added comments in the code indicating when to use your personal API key.

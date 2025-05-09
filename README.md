@@ -24,23 +24,37 @@ CHATDB FOR LARGE-SCALE ENTERTAINMENT DATASETS
 
 # Upload to MySQL
 1. login to MySQL
-  `mysql -u root -p`
+
+`mysql -u root -p`
+
 2. Enter password
 3. create database
-   `CREATE DATABASE project551;`
+
+`CREATE DATABASE project551;`
+
 4. Use created database
-   `USE project551;`
+
+`USE project551;`
+
 5. Upload dataset
-   `source dataset.sql`
+
+`source dataset.sql`
 
 # Upload to PostGreSQL
 1. login to PostGreSQL
-  `psql -U postgres`
-2. create database
+
+`psql -U postgres`
+
+3. create database
+
    `CREATE DATABASE project551;`
-3. connect to created database
+   
+5. connect to created database
+
    `\c project551`
-4. Upload dataset
+   
+7. Upload dataset
+
 `\i dataset_psql.sql`
 
 # Start streamlit to interact with our NLI real-time 

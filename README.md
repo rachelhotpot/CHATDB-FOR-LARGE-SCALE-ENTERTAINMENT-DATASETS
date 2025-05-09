@@ -83,4 +83,5 @@ CHATDB FOR LARGE-SCALE ENTERTAINMENT DATASETS
 
 
 # OpenAI API Keys
-For privacy and security reasons, we have not attached the API keys used in the Github. However, we have added comments in the code indicating when to use your personal API key to replace the variable OPENAI_API_KEY.
+For privacy and security reasons, we have not attached the API keys used in the Github. 
+# However, we have added comments in the code indicating when to use your personal API key to replace the variable OPENAI_API_KEY.

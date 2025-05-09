@@ -3,6 +3,9 @@ CHATDB FOR LARGE-SCALE ENTERTAINMENT DATASETS
 
 # To access our full dataset, please visit this Drive [Link](https://drive.google.com/drive/folders/1z1rtXkZ8yUWFPUhPlxfFKT2U-K7_RcWU?usp=drive_link)
 
+# To install all required libraries and packages
+Run "pip install -r requirements.txt" in terminal
+
 # to install MySQL
 brew install mysql
 
@@ -65,4 +68,4 @@ streamlit run mongo_db.py
 
 
 # OpenAI API Keys
-For privacy and security reasons, we have not attached the API keys used in the Github. However, we have added comments in the code indicating when to use your personal API key.
+For privacy and security reasons, we have not attached the API keys used in the Github. However, we have added comments in the code indicating when to use your personal API key to replace the variable OPENAI_API_KEY.

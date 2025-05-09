@@ -293,7 +293,8 @@ st.title("Chat with our ChatDB")
 with st.sidebar:
     st.subheader("Settings")
     st.write("Connect with MongoDB. Connect to the database and start chatting")
-    
+
+    # NOTE: can update with your personal login credentials for MongoDB
     st.text_input("User", value="riyaberr", key="User")
     st.text_input("Password", type="password", value="cjdOzwkTHXqihuHK", key="Password")
     st.text_input("AppName", value="dsci-551-project", key="AppName")

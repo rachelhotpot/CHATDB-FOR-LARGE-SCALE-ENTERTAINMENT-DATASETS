@@ -16,35 +16,38 @@ import certifi
 import re
 from bson import ObjectId
 
-OPENAI_API_KEY = "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"
 
-# resources: https://cloud.mongodb.com/v2/67ce728a207f1176e92d7d77#/connect/dsci-551-project?automateSecurity=true
+# Please replace with your own OPENAI API Key 
+OPENAI_API_KEY = "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"
+
+# Connect to the MongoDB database using credentials 
 def init_database(user: str, password: str, appName: str):
     db_uri = f"mongodb+srv://{user}:{password}@{appName}.gaj6t5p.mongodb.net/?retryWrites=true&w=majority&appName={appName}"
-    # Send a ping to confirm a successful connection
     client = MongoClient(db_uri, server_api=ServerApi('1'), tlsCAFile=certifi.where())
     try:
         client.admin.command('ping')
+        # Send a ping to confirm a successful connection
         print("Pinged your deployment. You successfully connected to MongoDB!")
         return client['551-project']  
     except Exception as e:
         print(e)
         
-# resources: https://www.oneschema.co/blog/import-csv-mongodb
+# upload json files as collections to MongoDB 
 def upload_data_to_mongo(client):
     db = client['551-project']
     collection = db['rating-new']
 
-    # CSV file path
     with open("dataset/json/rating.json", "r") as f:
-        data = json.load(f)  # Use json.loads(line) in a loop for newline-delimited files
+        data = json.load(f) 
 
     # Insert the documents
     if isinstance(data, list):
         collection.insert_many(data)
     else:
         collection.insert_one(data)
-            
+       
+    
+# MongoDB chain for query generation. Given a database schema and user question, generates the appropriate MongoDB query to answer # the user's question. 
 def get_mongo_chain(db):
     template = """
     You are a data analyst. You are interacting with a user who is asking you questions about the company's database. 
@@ -135,6 +138,7 @@ def get_mongo_chain(db):
     prompt = ChatPromptTemplate.from_template(template)
     llm = ChatOpenAI(model="gpt-3.5-turbo", api_key=OPENAI_API_KEY)
 
+    # Provides information on schema for each collection in the database 
     def get_schema(_):
         return {
             "rating": db["rating"].find_one(),
@@ -153,13 +157,16 @@ def get_mongo_chain(db):
         | (lambda x: json.loads(x))
     )
     
+    
+    
+# corrects MongoDB query so it is ready for the next step in our pipeline 
 def fix_pipeline(pipeline):
     fixed = []
     for stage in pipeline:
         if not isinstance(stage, dict) or not stage:
-            continue  # skip invalid or empty stages
+            continue  
         if isinstance(stage, dict):
-            # If it's a multi-key stage, split into separate single-key stages
+            # If it's a multi-key stage --> split into separate single-key stages
             if len(stage) > 1:
                 for k, v in stage.items():
                     fixed.append({k: v})
@@ -175,6 +182,7 @@ def fix_pipeline(pipeline):
     return fixed
 
 
+# output a natural language response to answer the user's question
 def get_response(user_query: str, db: MongoClient, chat_history: list):
     mongo_chain = get_mongo_chain(db)
 
@@ -201,7 +209,7 @@ def get_response(user_query: str, db: MongoClient, chat_history: list):
         st.warning("Please connect to the database first.")
         st.stop()
 
-    # 1. Get Mongo query + collection name
+    # 1. Get MongoDB query + collection name
     mongo_output = mongo_chain.invoke({
         "question": user_query,
         "chat_history": chat_history
@@ -212,7 +220,7 @@ def get_response(user_query: str, db: MongoClient, chat_history: list):
     query = mongo_output.get("query", {})
     
 
-    # 2. Execute MongoDB query
+    # 2. Execute MongoDB query based on the question asked and corresponding function 
     if operation == "insert":
         result = db[collection_name].insert_one(query)
         mongo_response = { "inserted_id": str(result.inserted_id) }
@@ -243,7 +251,7 @@ def get_response(user_query: str, db: MongoClient, chat_history: list):
         print("Fixed pipeline:", pipeline)
         mongo_response = list(db[collection_name].aggregate(pipeline, maxTimeMS=300000))
 
-    # 3. Natural language generation
+    # 3. Generate Natural Language Response that is understandable to users 
     chain = (
         RunnablePassthrough.assign(
             schema=lambda _: {
@@ -281,6 +289,7 @@ load_dotenv()
 st.set_page_config(page_title="Chat with our ChatDB", page_icon=":speech_balloon")
 st.title("Chat with our ChatDB")
 
+# Configure streamlit settings and UI interface 
 with st.sidebar:
     st.subheader("Settings")
     st.write("Connect with MongoDB. Connect to the database and start chatting")
@@ -299,7 +308,7 @@ with st.sidebar:
             st.session_state.db = db
             st.success("Connected to database!")
     
-
+# distinguish whether the sender of a message is AI or the human user 
 for message in st.session_state.chat_history:
     if isinstance(message, AIMessage):
         with st.chat_message("AI"):

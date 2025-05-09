@@ -4,7 +4,7 @@ CHATDB FOR LARGE-SCALE ENTERTAINMENT DATASETS
 # To access our full dataset, please visit this Drive [Link](https://drive.google.com/drive/folders/1z1rtXkZ8yUWFPUhPlxfFKT2U-K7_RcWU?usp=drive_link)
 
 # To install all required libraries and packages
-`pip install -r requirements.txt"`
+`pip install -r requirements.txt`
 
 # to install MySQL
 `brew install mysql`
@@ -79,6 +79,7 @@ CHATDB FOR LARGE-SCALE ENTERTAINMENT DATASETS
 	|--Draft- Group Proposal.pdf 
 	|--Mid Progress Report.pdf
 	|--551_ Group Proposal Final.pdf
+ 	|--CHATDB_Final_Report.pdf
 
 
 # OpenAI API Keys

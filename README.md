@@ -42,6 +42,7 @@ pip install pymysql
 
 # Start streamlit
 streamlit run app.py
+
 streamlit run mongo_db.py
 
 # Repository Structure 

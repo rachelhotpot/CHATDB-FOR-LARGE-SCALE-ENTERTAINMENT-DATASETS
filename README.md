@@ -57,6 +57,15 @@ CHATDB FOR LARGE-SCALE ENTERTAINMENT DATASETS
 
 `\i dataset_psql.sql`
 
+# Upload to MongoDB
+1. Place the JSON file you want to upload to MongoDB in our `CHATDB-FOR-LARGE-SCALE-ENTERTAINMENT-DATASETS` folder
+   
+2. In the `mongo_db.py` file, run `init_database` function with your own MongoDB credentials
+
+3. Then, change the line that says `with open("dataset/json/rating.json", "r") as f` in `upload_data_to_mongo` function
+
+4. Run `upload_data_to_mongo` function 
+
 # Start streamlit to interact with our NLI real-time 
 `streamlit run app.py`
 

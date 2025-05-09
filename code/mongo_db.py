@@ -37,6 +37,7 @@ def upload_data_to_mongo(client):
     db = client['551-project']
     collection = db['rating-new']
 
+    # change with the path to your own JSON file 
     with open("dataset/json/rating.json", "r") as f:
         data = json.load(f) 
 

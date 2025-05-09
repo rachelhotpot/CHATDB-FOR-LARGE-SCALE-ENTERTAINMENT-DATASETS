@@ -34,10 +34,13 @@ def init_database(user: str, password: str, appName: str):
         
 # upload json files as collections to MongoDB 
 def upload_data_to_mongo(client):
+    # update the db name 
     db = client['551-project']
+
+    # update the collection name 
     collection = db['rating-new']
 
-    # change with the path to your own JSON file 
+    # update path to match the location of your JSON file 
     with open("dataset/json/rating.json", "r") as f:
         data = json.load(f) 
 

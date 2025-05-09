@@ -40,7 +40,7 @@ pip install pymysql
 4. Upload dataset
 5. \i dataset_psql.sql
 
-# Start streamlit
+# Start streamlit to interact with our NLI real-time 
 streamlit run app.py
 
 streamlit run mongo_db.py

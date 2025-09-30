@@ -1,6 +1,8 @@
 # CHATDB-FOR-LARGE-SCALE-ENTERTAINMENT-DATASETS
 CHATDB FOR LARGE-SCALE ENTERTAINMENT DATASETS
 
+Final capstone project for Foundations of Management Course (DSCI 551) at USC Viterbi. Full-stack AI chatbot enabling natural language querying and modification of 20M+ records across Postgres, MySQL, and MongoDB. Built with Python, Spark, LangChain, and GPT-3.5; implemented secure APIs with authentication and access control for production-like environments.
+
 # To access our full dataset, please visit this Drive [Link](https://drive.google.com/drive/folders/1z1rtXkZ8yUWFPUhPlxfFKT2U-K7_RcWU?usp=drive_link). The original dataset can be found on [Kaggle](https://www.kaggle.com/datasets/grouplens/movielens-20m-dataset/data?select=genome_scores.csv)
 
 # To install all required libraries and packages
